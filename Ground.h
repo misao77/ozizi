@@ -1,28 +1,24 @@
 #pragma once
 #include "Engine/GameObject.h"
-
-
-
-class Player :
+class Ground :
     public GameObject
 {
-	int hWalkModel_;
-	int hIdleModel_;//
+	int hSilly;
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	//ˆø”Fparent  eƒIƒuƒWƒFƒNƒgiSceneManagerj
-	Player(GameObject* parent);
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//å¼•æ•°ï¼šparent  è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆSceneManagerï¼‰
+	Ground(GameObject* parent);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize() override;
 
-	//XV
+	//æ›´æ–°
 	void Update() override;
 
-	//•`‰æ
+	//æç”»
 	void Draw() override;
 
-	//ŠJ•ú
+	//é–‹æ”¾
 	void Release() override;
 };
 
