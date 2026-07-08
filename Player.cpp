@@ -33,6 +33,10 @@ namespace
 						XMVectorSet(1.0f, 0, 0, 0)  };
 	float TURN_FRAME = 30.0f;
 
+	float turnStartAngle = 0.0f;
+	float turnEndAngle = 0.0f;
+	PLAYER_DIRECTION turnEndDirection = PLAYER_DOWN;
+
 }
 
 Player::Player(GameObject* parent)
@@ -68,62 +72,93 @@ void Player::Update()
 
 	XMVECTOR pos = XMLoadFloat3(&transform_.position_);
 	XMVECTOR move = XMVectorSet(0, 0, 0, 0);
-	const float SPEED = 0.1f;
+	const float SPEED = 0.05f;
 	float angle = 0.0f;
+	static float turnFrame = 0.0f;
+	if (pstate != PLAYER_STATE::PLAYER_TURN) {
+		pstate = PLAYER_STATE::PLAYER_IDLE;
+	}
+
+	PLAYER_DIRECTION ildDir = pdirection;
+
+
 	pstate = PLAYER_STATE::PLAYER_IDLE;
 	PLAYER_DIRECTION oldDir = pdirection;
+	if (pstate != PLAYER_STATE::PLAYER_TURN)
+	{
+		if (Input::IsKey(DIK_LEFT)) {
+			//angle = 90.0f;
+			pdirection = PLAYER_DIRECTION::PLAYER_LEFT;
+			move += XMVectorSet(-1.0f, 0, 0, 0);
+			pstate = PLAYER_STATE::PLAYER_WALK;
 
-	if (Input::IsKey(DIK_LEFT)) {
-		//angle = 90.0f;
-		pdirection = PLAYER_DIRECTION::PLAYER_LEFT;
-		move += XMVectorSet(-1.0f, 0, 0, 0);
-		pstate = PLAYER_STATE::PLAYER_WALK;
-		
-		
+
+		}
+		if (Input::IsKey(DIK_RIGHT)) {
+			//angle = -90.0f;
+			pdirection = PLAYER_DIRECTION::PLAYER_RIGHT;
+			//move += XMVectorSet(1.0f, 0, 0, 0);
+			pstate = PLAYER_STATE::PLAYER_WALK;
+
+		}
+		if (Input::IsKey(DIK_UP)) {
+			//angle = 180.0f;
+			pdirection = PLAYER_DIRECTION::PLAYER_UP;
+			//move += XMVectorSet(0, 0, 1.0f, 0);
+			pstate = PLAYER_STATE::PLAYER_WALK;
+
+		}
+		if (Input::IsKey(DIK_DOWN)) {
+			//angle = 0.0f;
+			pdirection = PLAYER_DIRECTION::PLAYER_DOWN;
+			//move += XMVectorSet(0, 0, -1.0f, 0);
+			pstate = PLAYER_STATE::PLAYER_WALK;
+
+		}
+
 	}
-	if (Input::IsKey(DIK_RIGHT)) {
-		//angle = -90.0f;
-		pdirection = PLAYER_DIRECTION::PLAYER_RIGHT;
-		//move += XMVectorSet(1.0f, 0, 0, 0);
-		pstate = PLAYER_STATE::PLAYER_WALK;
-		
-	}
-	if (Input::IsKey(DIK_UP)) {
-		//angle = 180.0f;
-		pdirection = PLAYER_DIRECTION::PLAYER_UP;
-		//move += XMVectorSet(0, 0, 1.0f, 0);
-		pstate = PLAYER_STATE::PLAYER_WALK;
-		
-	}
-	if (Input::IsKey(DIK_DOWN)) {
-		//angle = 0.0f;
-		pdirection = PLAYER_DIRECTION::PLAYER_DOWN;
-		//move += XMVectorSet(0, 0, -1.0f, 0);
-		pstate = PLAYER_STATE::PLAYER_WALK;
-		
-	}
-	if (oldDir != pstate)
+	if (oldDir != pdirection)
 	{
 		pstate = PLAYER_STATE::PLAYER_TURN;
+		turnFrame = 0.0f;
+		turnStartAngle = P_ANGLE[oldDir];
+		turnEndDirection = pdirection;
+		turnEndAngle = P_ANGLE[turnEndDirection];
 
 	}
 
 	//èÛë‘êÿÇËë÷Ç¶ÇÃèàóù
 	//èÛë‘Ç≤Ç∆ÇÃèàóù
 
-
-
-	if (pstate != PLAYER_STATE::PLAYER_IDLE)
+	if (pstate != PLAYER_STATE::PLAYER_TURN)
 	{
-		move = P_MOVE[pdirection];
-		angle = P_ANGLE[pdirection];
+		turnFrame += 1.0f;
+		float t = turnFrame / TURN_FRAME;
+		if (t > 1.0f)
+		{
+			t = 1.0f;
+		}
+		angle = turnStartAngle + (turnEndAngle - turnStartAngle) * t;
 		transform_.rotate_.y = angle;
+		if (turnFrame >= TURN_FRAME)
+		{
+			pdirection = turnEndDirection;
+			transform_.rotate_.y = P_ANGLE[pdirection];
+			pstate = PLAYER_STATE_MAX;
+		}
 	}
-	else if (pstate == PLAYER_STATE::PLAYER_TURN)
+
+	///*if (pstate != PLAYER_STATE::PLAYER_IDLE)
+	//{
+	//	move = P_MOVE[pdirection];
+	//	angle = P_ANGLE[pdirection];
+	//	transform_.rotate_.y = angle;
+	//}*/
+	else if (pstate == PLAYER_STATE::PLAYER_IDLE)
 	{
 		//âÒì]íÜÇÃèàóù
-		oldDir //ç°ÇÃäpìx
-		pdirection//ñ⁄ïWÇÃäpìx
+			oldDir; //ç°ÇÃäpìx
+			pdirection;//ñ⁄ïWÇÃäpìx
 	}
 	pos = pos + SPEED * move;
 	XMStoreFloat3(&transform_.position_, pos);
@@ -139,7 +174,7 @@ void Player::Draw()
 		Model::SetTransform(hIdleModel_, transform_);
 		Model::Draw(hIdleModel_);
 	}
-	else if (pstate == PLAYER_STATE::PLAYER_WALK)
+	else if (pstate == PLAYER_STATE::PLAYER_WALK || pstate == PLAYER_STATE::PLAYER_TURN)
 	{
 		Model::SetTransform(hWalkModel_, transform_);
 		Model::Draw(hWalkModel_);
