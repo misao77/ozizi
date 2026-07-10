@@ -3,6 +3,7 @@
 #include "Engine/Debug.h"
 #include "TestScene.h"
 #include "Engine/Input.h"
+#include "Ground.h"
 
 namespace
 {
@@ -49,6 +50,7 @@ namespace
 		return angle;
 
 	}
+	std::vector<std::vector<int>> gmap;
 
 }
 
@@ -68,6 +70,10 @@ void Player::Initialize()
 	hIdleModel_ = Model::Load("Idle.fbx");
 	Model::SetAnimFrame(hIdleModel_, 0, 117, 1.0);
 
+	if (ground_ != nullptr)
+	{
+		gmap = ground_->GetMapData();
+	}
 }
 
 void Player::Update()
@@ -176,8 +182,19 @@ void Player::Update()
 	//		oldDir; //今の角度
 	//		pdirection;//目標の角度
 	//}
+
 	pos = pos + SPEED * move;
 	XMStoreFloat3(&transform_.position_, pos);
+	XMFLOAT3 wpos = transform_.position_;
+	//壁オブジェクトに食い込んだら戻す
+	gmap = ground_->GetMapData();
+	int mapX = (int)((wpos.x) + 10) / 2;
+	int mapZ = (int)(10 -(wpos.z))/ 2;
+	if (gmap[mapZ][mapX] == 1)
+	{
+		pos = pos - SPEED * move;
+		XMStoreFloat3(&transform_.position_, pos);
+	}
 
 }
 
