@@ -1,12 +1,13 @@
 #include "Ground.h"
 #include "Engine/Model.h"
 #include "Engine/Debug.h"
+#include "Engine/CsvReader.h"
 
 namespace
 {
 	using std::vector;
 	int model_t = -1;
-	vector <vector<int>> mapData =
+	/*vector <vector<int>> mapData =
 	{
 		{1,1,1,1,1,1,1,1,1,1},
 		{1,1,0,1,1,1,1,0,1,1},
@@ -18,13 +19,29 @@ namespace
 		{1,1,1,0,0,0,0,1,1,1},
 		{1,1,1,0,0,1,1,1,1,1},
 		{1,1,1,1,1,1,1,1,1,1}
-	};
+	};*/
 }
 
 Ground::Ground(GameObject* parent)
-	:GameObject(parent), hSilly(-1), hburokkuk(-1)
+	:GameObject(parent), hSilly(-1), hburokkuk(-1),mapWidth_(-1),mapHeight_(-1)
 {
-	mapData_ = mapData;//ファイルグローバルのmapDataをコピーして、メンバ変数に
+	CsvReader csvData;
+	csvData.Load("csv1.csv");
+	mapWidth_ = csvData.GetWidth();
+	mapHeight_ = csvData.GetHeight();
+
+	mapData_ = vector<vector<int>>(mapHeight_, vector<int>(mapWidth_, 0));
+	for(int x = 0; x < mapWidth_; x++)
+	{
+		for (int y = 0; y < mapHeight_; y++)
+		{
+			mapData_[y][x] = csvData.GetValue(x, y);
+		}
+
+	}
+
+
+	//mapData_ = mapData;//ファイルグローバルのmapDataをコピーして、メンバ変数に
 }
 
 void Ground::Initialize()

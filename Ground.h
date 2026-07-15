@@ -25,5 +25,7 @@ private:
 	int hSilly;
 	int hburokkuk;
 	std::vector<std::vector<int>> mapData_;
+	int mapWidth_;
+	int mapHeight_;
 };
 
