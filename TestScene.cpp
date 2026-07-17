@@ -17,6 +17,8 @@ void TestScene::Initialize()
 	Ground* pGround =Instantiate<Ground>(this);
 	pPlayer->SetGround(pGround);
 	Enemy* pEnemy = Instantiate<Enemy>(this);
+	//Food* pFood = Instantiate<Food>(this);
+
 
 	Camera::SetPosition({ 0,10,-20 });
 	Camera::SetTarget({ 0,0,0 });

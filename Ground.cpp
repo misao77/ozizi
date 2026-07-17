@@ -2,6 +2,7 @@
 #include "Engine/Model.h"
 #include "Engine/Debug.h"
 #include "Engine/CsvReader.h"
+#include "Food.h"
 
 namespace
 {
@@ -28,14 +29,40 @@ Ground::Ground(GameObject* parent)
 	CsvReader csvData;
 	csvData.Load("csv1.csv");
 	mapWidth_ = csvData.GetWidth();
-	mapHeight_ = csvData.GetHeight();
+	mapHeight_ = csvData.GetHeight()/2;
 
 	mapData_ = vector<vector<int>>(mapHeight_, vector<int>(mapWidth_, 0));
+	ballData_ = std::vector<std::vector<int>>(mapHeight_, std::vector<int>(mapWidth_, 0));
+
 	for(int x = 0; x < mapWidth_; x++)
 	{
 		for (int y = 0; y < mapHeight_; y++)
 		{
 			mapData_[y][x] = csvData.GetValue(x, y);
+		}
+
+	}
+	for (int x = 0; x < mapWidth_; x++)
+	{
+		for (int y = 0; y < mapHeight_; y++)
+		{
+			ballData_[y][x] = csvData.GetValue(x, y+mapHeight_);
+			if (ballData_[y][x] > 0) {
+				Food* food = Instantiate<Food>(this);
+				food->SetPosition({ -9.0f + x * 2.0f,1.0f,9.0f - y * 2.0f });
+				if (ballData_[y][x] == 1)
+				{
+					food->SetFoodType(FoodType::FOODTYPE_NORMAL);
+
+				}
+				else if (ballData_[y][x] == 2)
+				{
+					food->SetFoodType(FoodType::FOODTYPE_POWER);
+
+				}
+
+			}
+			
 		}
 
 	}
@@ -50,6 +77,8 @@ void Ground::Initialize()
 	Model::SetAnimFrame(hSilly, 0, 59, 1.0);
 	hburokkuk = Model::Load("rego.fbx");
 	Model::SetAnimFrame(hburokkuk, 0, 59, 1.0);
+	/*hSmallBall = Model::Load("tama.fbx");
+	Model::SetAnimFrame(hSmallBall, 0, 59, 1.0);*/
 }
 
 void Ground::Update()
@@ -74,11 +103,22 @@ void Ground::Draw()
 		//transform_.position_ = { 1.0f, -1.0f, 1.0 };
 	}
 
-	//ブロック
-	//transform_.scale_ = { 0.3f, 0.3f, 0.4f };
-	/*transform_.position_ = { 1.0f, -1.0f, 0 };
-	Model::SetTransform(hburokkuk, transform_);
-	Model::Draw(hburokkuk);*/
+	/*for (int j = 0; j < mapHeight_; j++)
+	{
+		for (int i = 0; i < mapWidth_; i++)
+		{
+			if (ballData_[j][i] == 1)
+			{
+				Transform tr;
+				tr.position_ = { -9.0f + i * 2.0f, 0.5f, 9.0f - j * 2.0f };
+				tr.scale_ = { 0.3f,0.3f,0.3f };
+
+				Model::SetTransform(hSmallBall, tr);
+				Model::Draw(hSmallBall);
+			}
+		}
+	}*/
+
 }
 
 void Ground::Release()

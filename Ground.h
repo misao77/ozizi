@@ -24,7 +24,9 @@ public:
 private:
 	int hSilly;
 	int hburokkuk;
+	//int hSmallBall;
 	std::vector<std::vector<int>> mapData_;
+	std::vector<std::vector<int>> ballData_;
 	int mapWidth_;
 	int mapHeight_;
 };
