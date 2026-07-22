@@ -1,5 +1,7 @@
 #include "Food.h"
 #include "Engine/Model.h"
+#include "TestScene.h"
+#include "Ground.h"
 
 Food::Food(GameObject* parent)
 	:GameObject(parent, "Food"), type_(FOODTYPE_NORMAL),hModel_(-1),score_(0)
@@ -26,6 +28,7 @@ void Food::Update()
 	{
 		transform_.rotate_.y += 1.0f;
 	}
+
 }
 
 void Food::Draw()
@@ -43,7 +46,7 @@ void Food::SetFoodType(FoodType type)
 	type_ = type;
 	if (type_ == FoodType::FOODTYPE_NORMAL)
 	{
-		SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0.5, 0), 0.3f);
+		SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0.25, 0), 0.3f);
 		AddCollider(collision);
 		transform_.scale_ = { 0.3f,0.3f,0.3f };
 		hModel_ = Model::Load("tama.fbx");
@@ -51,7 +54,7 @@ void Food::SetFoodType(FoodType type)
 	}
 	else if (type_ == FoodType::FOODTYPE_POWER)
 	{
-		SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0.5, 0), 0.7f);
+		SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0.25, 0), 0.7f);
 		AddCollider(collision);
 		transform_.scale_ = { 0.7f,0.7f,0.7f };
 		hModel_ = Model::Load("tama1.fbx");
@@ -61,4 +64,13 @@ void Food::SetFoodType(FoodType type)
 
 void Food::OnCollision(GameObject* pTarget)
 {
+	TestScene* testScene = dynamic_cast<TestScene*>(GetParent()->GetParent());
+	testScene->AddScore(score_);
+	Ground* ground = dynamic_cast<Ground*>(FindObject("Ground"));
+	ground->DecEsaCount(type_);
+
+	if (pTarget->GetObjectName() == "Player")
+	{
+		KillMe();
+	}
 }

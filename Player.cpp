@@ -74,6 +74,8 @@ void Player::Initialize()
 	{
 		gmap = ground_->GetMapData();
 	}
+	SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 1.0, 0), 0.3f);
+	AddCollider(collision);
 }
 
 void Player::Update()
