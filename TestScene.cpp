@@ -49,6 +49,9 @@ void TestScene::Draw()
 	std::string scrText;
 	scrText = "SCORE" + std::to_string(myScore);
 	pText_->Draw(20, 20, scrText.c_str());
+	int esaCount, normalEsaCount, powerEsaCount;
+	std::tuple<int, int, int>esa = pGround->GetEsaCount();
+	esaCount
 }
 
 //ŠJ•ú

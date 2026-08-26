@@ -21,6 +21,18 @@ public:
 	//開放
 	void Release() override;
 	//void SetGround(Ground* ground) { ground_ = ground };
+	void DecEsaCount(int type)
+	{
+		esaCount_--;
+		if (type == 1)
+		{
+			normalEsaCount_--;
+		}
+		else if (type == 2)
+		{
+			powerEsaCount_--;
+		}
+	}
 private:
 	int hSilly;
 	int hburokkuk;
@@ -29,5 +41,8 @@ private:
 	std::vector<std::vector<int>> ballData_;
 	int mapWidth_;
 	int mapHeight_;
+	int esaCount_;
+	int normalEsaCount_;
+	int powerEsaCount_;
 };
 
