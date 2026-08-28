@@ -67,7 +67,7 @@ void Food::OnCollision(GameObject* pTarget)
 	TestScene* testScene = dynamic_cast<TestScene*>(GetParent()->GetParent());
 	testScene->AddScore(score_);
 	Ground* ground = dynamic_cast<Ground*>(FindObject("Ground"));
-	ground->DecEsaCount(type_);
+	//ground->DecEsaCount(type_);
 
 	if (pTarget->GetObjectName() == "Player")
 	{

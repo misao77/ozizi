@@ -20,8 +20,7 @@ public:
 
 	//開放
 	void Release() override;
-	//void SetGround(Ground* ground) { ground_ = ground };
-	void DecEsaCount(int type)
+	/*void DecEsaCount(int type)
 	{
 		esaCount_--;
 		if (type == 1)
@@ -32,7 +31,7 @@ public:
 		{
 			powerEsaCount_--;
 		}
-	}
+	}*/
 private:
 	int hSilly;
 	int hburokkuk;
