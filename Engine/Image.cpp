@@ -112,6 +112,8 @@ namespace Image
 		}
 
 		SAFE_DELETE(_datas[handle]);
+
+		_datas[handle] = nullptr;
 	}
 
 

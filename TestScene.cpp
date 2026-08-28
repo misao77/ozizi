@@ -26,7 +26,7 @@ void TestScene::Initialize()
 	Ground* pGround = Instantiate<Ground>(this);
 	
 	pPlayer->SetGround(pGround);
-	Enemy* pEnemy = Instantiate<Enemy>(this);
+	//Enemy* pEnemy = Instantiate<Enemy>(this);
 	//Food* pFood = Instantiate<Food>(this);
 
 

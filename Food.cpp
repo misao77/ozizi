@@ -4,7 +4,7 @@
 #include "Ground.h"
 
 Food::Food(GameObject* parent)
-	:GameObject(parent, "Food"), type_(FOODTYPE_NORMAL),hModel_(-1),score_(0)
+	:GameObject(nullptr, "Food"), type_(FOODTYPE_NORMAL),hModel_(-1),score_(0)
 {
 }
 
@@ -18,7 +18,6 @@ Food::~Food()
 
 void Food::Initialize()
 {
-	//transform_.scale_ = { 0.3f,0.3f,0.3f };
 	
 }
 
