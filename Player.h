@@ -26,6 +26,11 @@ public:
 private:
 	int hWalkModel_;//歩き
 	int hIdleModel_;//待機
+	int hRunModel_;//走り
+	int warpCooldown_ = 0;
+	bool isRunning_ = false;
+	float moveSpeed_ = 3.0f;
+	float runSpeed_ = 6.0f;
 	Ground* ground_;//地面オブジェクトのポインタ
 };
 

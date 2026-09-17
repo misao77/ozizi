@@ -24,8 +24,13 @@ public:
 	//ŠJ•ú
 	void Release() override;
 	void AddScore(int score) { myScore += score; }
+
+	void AddFoodCount();
+	void DecFoodCount();
 private:
 	Text* pText_;
 	int myScore;
-	
+
+	int foodCount_ = 0;
+
 };

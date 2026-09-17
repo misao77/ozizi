@@ -24,17 +24,17 @@ namespace
 }
 
 Ground::Ground(GameObject* parent)
-	:GameObject(parent), hSilly(-1), hburokkuk(-1),mapWidth_(-1),mapHeight_(-1)
+	:GameObject(parent), hSilly(-1), hburokkuk(-1), mapWidth_(-1), mapHeight_(-1)
 {
 	CsvReader csvData;
 	csvData.Load("csv1.csv");
 	mapWidth_ = csvData.GetWidth();
-	mapHeight_ = csvData.GetHeight()/2;
+	mapHeight_ = csvData.GetHeight() / 2;
 
 	mapData_ = vector<vector<int>>(mapHeight_, vector<int>(mapWidth_, 0));
 	ballData_ = std::vector<std::vector<int>>(mapHeight_, std::vector<int>(mapWidth_, 0));
 
-	for(int x = 0; x < mapWidth_; x++)
+	for (int x = 0; x < mapWidth_; x++)
 	{
 		for (int y = 0; y < mapHeight_; y++)
 		{
@@ -46,7 +46,7 @@ Ground::Ground(GameObject* parent)
 	{
 		for (int y = 0; y < mapHeight_; y++)
 		{
-			ballData_[y][x] = csvData.GetValue(x, y+mapHeight_);
+			ballData_[y][x] = csvData.GetValue(x, y + mapHeight_);
 			if (ballData_[y][x] > 0) {
 				Food* food = Instantiate<Food>(this);
 				food->SetPosition({ -9.0f + x * 2.0f,1.0f,9.0f - y * 2.0f });
@@ -62,7 +62,7 @@ Ground::Ground(GameObject* parent)
 				}
 
 			}
-			
+
 		}
 
 	}
@@ -91,7 +91,7 @@ void Ground::Draw()
 	//transform_.position_ = { 0, 0, 0 };
 	Model::SetTransform(hSilly, transform_);
 	Model::Draw(hSilly);
-	for (int j = 0; j < 10; j++){
+	for (int j = 0; j < 10; j++) {
 		for (int i = 0; i < 10; i++) {
 			if (mapData_[j][i] == 1) {
 				Transform tr;

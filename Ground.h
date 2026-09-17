@@ -32,6 +32,7 @@ public:
 			powerEsaCount_--;
 		}
 	}*/
+
 private:
 	int hSilly;
 	int hburokkuk;
@@ -40,7 +41,7 @@ private:
 	std::vector<std::vector<int>> ballData_;
 	int mapWidth_;
 	int mapHeight_;
-	int esaCount_;
+	int esaCount_ = 0;
 	int normalEsaCount_;
 	int powerEsaCount_;
 };

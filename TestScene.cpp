@@ -60,3 +60,11 @@ void TestScene::Release()
 {
 	pText_->Release();
 }
+
+void TestScene::AddFoodCount()
+{
+}
+
+void TestScene::DecFoodCount()
+{
+}
