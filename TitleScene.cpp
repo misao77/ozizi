@@ -30,7 +30,7 @@ void TitleScene::Draw()
 {
     if (pText_ != nullptr)
     {
-        pText_->Draw(300, 200, "GAME TITLE");
+        pText_->Draw(300, 200, "OZIZI PAKU");
         pText_->Draw(320, 300, "PRESS SPACE");
     }
 }
